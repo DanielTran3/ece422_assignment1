@@ -49,38 +49,21 @@ public class Heapsort {
 		}
 	}
 
-	public ArrayList<Integer> read_data(String filename) {
-		ArrayList<Integer> data_list = new ArrayList<Integer>();
+	
 
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(filename));
-			String line = br.readLine();
-			while (line != null) {
-				data_list.add(Integer.valueOf(line));
-				line = br.readLine();
-			}
-		}
-
-		catch (IOException e) {
-			System.out.println("Could not read data!");
-			e.printStackTrace();
-		}
-		return data_list;
-	}
-
-	public static void main(String[] args) {
-		Heapsort h = new Heapsort();
-		ArrayList<Integer> data = new ArrayList<Integer>();
-		data = h.read_data(args[0]);
-
-		for (Integer i : data) {
-			System.out.println(i.toString());
-		}
-		h.heapSort(data);
-		System.out.println("-----------------------------------------------");
-
-		for (Integer i : data) {
-			System.out.println(i.toString());
-		}
-	}
+//	public static void main(String[] args) {
+//		Heapsort h = new Heapsort();
+//		ArrayList<Integer> data = new ArrayList<Integer>();
+//		data = h.read_data(args[0]);
+//
+//		for (Integer i : data) {
+//			System.out.println(i.toString());
+//		}
+//		h.heapSort(data);
+//		System.out.println("-----------------------------------------------");
+//
+//		for (Integer i : data) {
+//			System.out.println(i.toString());
+//		}
+//	}
 }
