@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 
 public class Executive {
@@ -10,23 +11,28 @@ public class Executive {
 		
 	}
 	
-	public ArrayList<Integer> read_data(String filename) {
-		ArrayList<Integer> data_list = new ArrayList<Integer>();
-
+	public int[] read_data(String filename) {
+		List<Integer> data_List = new ArrayList<>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(filename));
 			String line = br.readLine();
+			
 			while (line != null) {
-				data_list.add(Integer.valueOf(line));
+				data_List.add(Integer.valueOf(line));
 				line = br.readLine();
 			}
+			br.close();
 		}
 
 		catch (IOException e) {
 			System.out.println("Could not read data!");
 			e.printStackTrace();
 		}
-		return data_list;
+
+		// Convert list into int[] (Java 8)
+		int[] data_intArray = data_List.stream().mapToInt(i->i).toArray();
+		
+		return data_intArray;
 	}
 	
 	public static void main(String[] args) {
@@ -37,25 +43,26 @@ public class Executive {
 		
 
 		Executive exec = new Executive();
-		ArrayList<Integer> nums = exec.read_data(args[0]);
-		ArrayList<Integer> insertionSortedElements = new ArrayList<Integer>();
-//		HeapsortThread sortingThread = new HeapsortThread(nums);
-//		Timer sortingTimer = new Timer();
-//		Watchdog watchdogTimer = new Watchdog(sortingThread);
-//		sortingTimer.schedule(watchdogTimer, 1000);
-//		sortingThread.start();
-//		try {
-//			sortingThread.join();
-//			sortingTimer.cancel();
-//		}
-//		catch (InterruptedException e) {
-//			e.printStackTrace();
-//			System.out.println("Error in Timing");
-//		}
+		int[] nums = exec.read_data(args[0]);
+//		ArrayList<Integer> insertionSortedElements = new ArrayList<Integer>();
 		
-		Insertionsort is = new Insertionsort();
-		System.loadLibrary("sort");
-		insertionSortedElements = is.sort(nums);
+		HeapsortThread sortingThread = new HeapsortThread(nums);
+		Timer sortingTimer = new Timer();
+		Watchdog watchdogTimer = new Watchdog(sortingThread);
+		sortingTimer.schedule(watchdogTimer, 1000);
+		sortingThread.start();
+		try {
+			sortingThread.join();
+			sortingTimer.cancel();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+			System.out.println("Error in Timing");
+		}
+		
+//		Insertionsort is = new Insertionsort();
+//		System.loadLibrary("sort");
+//		insertionSortedElements = is.sort(nums);
 	}
 }
 

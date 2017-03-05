@@ -5,25 +5,25 @@ import java.util.ArrayList;
 
 public class Heapsort {
 
-	public void swapper(ArrayList<Integer> data_list, int pos1, int pos2) {
-		int temp = data_list.get(pos1);
-		data_list.set(pos1, data_list.get(pos2));
-		data_list.set(pos2, temp);
+	public void swapper(int[] data_list, int pos1, int pos2) {
+		int temp = data_list[pos1];
+		data_list[pos1] = data_list[pos2];
+		data_list[pos2] = temp;
 	}
 
 	// Function builds the heap as new nodes get added in.
-	public void heapify(ArrayList<Integer> data_list, int nodePos, int unsorted_array_size) {
+	public void heapify(int[] data_list, int nodePos, int unsorted_array_size) {
 		int largestElementPos = nodePos;
 		int leftChildPos = 2 * nodePos + 1;
 		int rightChildPos = 2 * nodePos + 2;
 
 		// If the left child is larger than the root
 		if ((leftChildPos < unsorted_array_size) &&
-			 data_list.get(largestElementPos) < data_list.get(leftChildPos)) {
+			 data_list[largestElementPos] < data_list[leftChildPos]) {
 				 largestElementPos = leftChildPos;
 			 }
 		if ((rightChildPos < unsorted_array_size) &&
-			 data_list.get(largestElementPos) < data_list.get(rightChildPos)) {
+			 data_list[largestElementPos] < data_list[rightChildPos]) {
 				 largestElementPos = rightChildPos;
 			 }
 
@@ -33,8 +33,8 @@ public class Heapsort {
 		}
 	}
 
-	public void heapSort(ArrayList<Integer> data) {
-		int size = data.size();
+	public void heapSort(int[] data) {
+		int size = data.length;
 
 		// Build the heap up
 		for (int node = (size/2) - 1; node >= 0; node--) {
