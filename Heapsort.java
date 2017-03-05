@@ -7,103 +7,96 @@ public class Heapsort {
 
 	// Re-heapify the heap after the largest element in the heap was removed
 	void heapFilterDown(ArrayList<Integer> data_list, int root_pointer, int nodePos) {
-		int leftChild;
-		int rightChild;
+		int leftChildPos;
+		int rightChildPos;
 		int temp;
-		int tempPointer;
-		int tempLeftChild;
-		int tempRightChild;
+		int rootPointerVal;
+		int leftChildVal;
+		int rightChildVal;
 
 		while(2*root_pointer <= nodePos) {
 
-			leftChild = 2*root_pointer + 1;
-			rightChild = 2*root_pointer + 2;
+			leftChildPos = 2*root_pointer + 1;
+			rightChildPos = 2*root_pointer + 2;
 
-			// Break the loop because this means that an element from the Sorted
-			// array (portion of the list that is excluded from the heap) is being
-			// accessed
-			if (leftChild > nodePos) {
+			// Accessing element from sorted list, break
+			if (leftChildPos > nodePos) {
 				break;
 			}
 
-			tempPointer = data_list.get(root_pointer);
-			tempLeftChild = data_list.get(leftChild);
+			rootPointerVal = data_list.get(root_pointer);
+			leftChildVal = data_list.get(leftChildPos);
+			rightChildVal = data_list.get(rightChildPos);
 
 			// If the node is larger than its children, then break, as it is in the
 			// correct position
-			if (((leftChild >= nodePos)||(rightChild >= nodePos)) && (nodePos > 3)) {
+			if (((leftChildPos >= nodePos)||(rightChildPos >= nodePos)) && (nodePos > 3)) {
 					break;
 			}
 
 			// Find maximum of node
-			if (rightChild <= nodePos) {
-
-				tempRightChild = data_list.get(rightChild);
+			if (rightChildPos <= nodePos) {
 
 				// Node of root_pointer is smaller than left and right child
 				// Then node is in correct position
-				if ((tempPointer > tempLeftChild) &&
-					 (tempPointer > tempRightChild)) {
+				if ((rootPointerVal > leftChildVal) &&
+					(rootPointerVal > rightChildVal)) {
 					break;
 				}
 				// The node is larger than both children
 				else {
 					// If the right child is larger than the left
-					if (tempLeftChild > tempRightChild) {
-						temp = tempPointer;
-						data_list.set(root_pointer, tempLeftChild);
-						data_list.set(leftChild, temp);
-						root_pointer = leftChild;
+					if (leftChildVal > rightChildVal) {
+						swapper(data_list, root_pointer, leftChildPos);
+						root_pointer = leftChildPos;
 					}
 
 					//If left child is larger, swap the node and right child
 					else {
-						temp = tempPointer;
-						data_list.set(root_pointer, tempRightChild);
-						data_list.set(rightChild, temp);
-						root_pointer = rightChild;
+						swapper(data_list, root_pointer, rightChildPos);
+						root_pointer = rightChildPos;
 					}
 				}
 			}
 			// There is no right child
 			else {
 				// If the node is greater than the left child, then its position is correct
-				if (tempPointer > tempLeftChild) {
+				if (rootPointerVal > leftChildVal) {
 					break;
 				}
 				// Left child is greater than the node, so swap them
 				else {
-					temp = tempPointer;
-					data_list.set(root_pointer, tempLeftChild);
-					data_list.set(leftChild, temp);
-					root_pointer = leftChild;
+					swapper(data_list, root_pointer, leftChildPos);
+					root_pointer = leftChildPos;
 				}
 			}
 		}
 	}
 
+	public void swapper(ArrayList<Integer> data_list, int pos1, int pos2) {
+		int temp = data_list.get(pos1);
+		data_list.set(pos1, data_list.get(pos2));
+		data_list.set(pos2, temp);
+	}
 
 	// Function builds the heap as new nodes get added in.
 	public void heapFilterUp(ArrayList<Integer> data_list, int nodePos) {
 		int parentPos;
 		int temp;
-		int tempNodePos;
-		int tempParent;
+		int nodeVal;
+		int parentVal;
 
 		while (nodePos != 0) {
 			// division will drop fractional portion
 			// example: 3.5 -> 3
 			parentPos = (nodePos-1)/2;
 
-			tempNodePos = data_list.get(nodePos);
-			tempParent = data_list.get(parentPos);
+			nodeVal = data_list.get(nodePos);
+			parentVal = data_list.get(parentPos);
 
 			// Swap the node with its parent if the added node is larger then the parent
-			if (tempNodePos > tempParent) {
-				temp = tempParent;
-				data_list.set(parentPos, tempNodePos);
-				data_list.set(nodePos, temp);
-
+			if (nodeVal > parentVal) {
+				swapper(data_list, parentPos, nodePos);
 				nodePos = parentPos;
 			}
 
@@ -129,12 +122,8 @@ public class Heapsort {
 		// Fix the heap after removing max element from root and adding it to the
 		// sorted section of the array
 		for (i = 0; i < size; i++) {
-			temp = data.get(0);
-			data.set(0, data.get(node));
-			data.set(node, temp);
-
+			swapper(data, 0, node);
 			node--;
-
 			heapFilterDown(data, 0, node);
 		}
 	}
