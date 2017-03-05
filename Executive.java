@@ -35,31 +35,31 @@ public class Executive {
 //			System.exit(0);
 //		}
 		
-//		Thread sortingThread = new Thread(new Executive(), "sortingThread");
+
 		Executive exec = new Executive();
 		ArrayList<Integer> nums = exec.read_data(args[0]);
-		
-		HeapsortThread sortingThread = new HeapsortThread(nums);
-		Timer sortingTimer = new Timer();
-		Watchdog watchdogTimer = new Watchdog(sortingThread);
-		sortingTimer.schedule(watchdogTimer, 1000);
-		sortingThread.start();
-		try {
-			sortingThread.join();
-			sortingTimer.cancel();
-		}
-		catch (InterruptedException e) {
-			e.printStackTrace();
-			System.out.println("Error in Timing");
-		}
-
-		
-		
-//		while(true) {
-//			System.out.println("From Main Thread");
+		ArrayList<Integer> insertionSortedElements = new ArrayList<Integer>();
+//		HeapsortThread sortingThread = new HeapsortThread(nums);
+//		Timer sortingTimer = new Timer();
+//		Watchdog watchdogTimer = new Watchdog(sortingThread);
+//		sortingTimer.schedule(watchdogTimer, 1000);
+//		sortingThread.start();
+//		try {
+//			sortingThread.join();
+//			sortingTimer.cancel();
 //		}
+//		catch (InterruptedException e) {
+//			e.printStackTrace();
+//			System.out.println("Error in Timing");
+//		}
+		
+		Insertionsort is = new Insertionsort();
+		System.loadLibrary("sort");
+		insertionSortedElements = is.sort(nums);
 	}
 }
+
+//Thread sortingThread = new Thread(new Executive(), "sortingThread");
 
 // Another way to make a thread (inside main)
 //Thread sortingThread = new Thread(new Runnable() {
