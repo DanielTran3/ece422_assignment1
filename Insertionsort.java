@@ -1,5 +1,7 @@
+import java.util.ArrayList;
+
 public class Insertionsort {
 
-public native int[] sort(int[] buf);
+public native ArrayList<Integer> sort(ArrayList<Integer> buf);
 
 }
