@@ -1,18 +1,15 @@
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.io.*;
-import java.lang.*;
 
 public class Data_Generator {
 
-	public static void gen_numbers(String filename, int num_elements) {
+	public void gen_numbers(String filename, int num_elements) {
 		int random_number;
 		int counter = 0;
 		try {
-			PrintWriter writer = new PrintWriter(filename + ".txt");
+			PrintWriter writer = new PrintWriter(filename);
 
 			while (counter < num_elements) {
 				random_number = (int) (Math.random() * 1000 + 1);
@@ -26,8 +23,8 @@ public class Data_Generator {
 		}
 	}
 
-	public static boolean invalidFilename(String filename) {
-		String pattern = "\\W";
+	public boolean invalidFilename(String filename) {
+		String pattern = "\\w\\.txt";
 		Pattern r = Pattern.compile(pattern);
 		Matcher m = r.matcher(filename);
 
@@ -39,10 +36,8 @@ public class Data_Generator {
 
 	public static void main(String[] args) {
 
-		//System.out.println("Please Enter Two Inputs: Filename to write to and number of elements to generate");
-
 		if (args.length != 2) {
-			System.out.println("Please Enter Only Two Inputs: Filename to write to and number of elements to generate");
+			System.out.println("Please Enter Only Two Inputs: Filename to write (ex. <\"filename\".txt> to and number of elements to generate");
 			System.exit(0);
 		}
 
@@ -52,8 +47,10 @@ public class Data_Generator {
 		System.out.println("Your Filename: " + filename);
 		System.out.println("Your Number of Integers: " + num_ints);
 
-		if (invalidFilename(filename)) {
-			System.out.println("Please enter a valid file name");
+		Data_Generator dg = new Data_Generator();
+
+		if (!dg.invalidFilename(filename)) {
+			System.out.println("Please enter a valid file name: <\"filename\".txt>");
 			System.exit(0);
 		}
 
@@ -62,6 +59,6 @@ public class Data_Generator {
 			 System.exit(0);
 		}
 
-		gen_numbers(filename, Integer.parseInt(num_ints));
+		dg.gen_numbers(filename, Integer.parseInt(num_ints));
 	}
 }
