@@ -112,9 +112,9 @@ public class Data_Sorter {
 				else if (!adj.acceptanceTest(nums)) {
 					System.out.println("Primary Sort Failed Acceptance Test");
 				}
-				System.out.println("----Stopped----");
+
 //				nums = exec.read_data(inputFilename);
-//				Insertionsort backupThread = new Insertionsort();
+//				InsertionsortThread backupThread = new InsertionsortThread();
 //				watchdogTimer = new Watchdog(backupThread);
 //				System.loadLibrary("insertionsort");
 //				insertionSortedElements = backupThread.insertSort(nums);
