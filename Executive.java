@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -41,29 +42,67 @@ public class Executive {
 //			System.exit(0);
 //		}
 		
+//		int[] insertionSortedElements;
+		String inputFilename;
+		String outputFilename;
+		double failureProbability;
+		int timeLimit_seconds;
+		
+		BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+		
+		try {
+			System.out.println("Please Enter the Input Filename (ex. <\"filename\".txt>)");
+			inputFilename = console.readLine();
 
-		Executive exec = new Executive();
-		int[] nums = {2, 1, 4};	
-		//int[] nums = exec.read_data(args[0]);
-		int[] insertionSortedElements;
-		
-//		HeapsortThread sortingThread = new HeapsortThread(nums);
-//		Timer sortingTimer = new Timer();
-//		Watchdog watchdogTimer = new Watchdog(sortingThread);
-//		sortingTimer.schedule(watchdogTimer, 1000);
-//		sortingThread.start();
-//		try {
-//			sortingThread.join();
-//			sortingTimer.cancel();
-//		}
-//		catch (InterruptedException e) {
-//			e.printStackTrace();
-//			System.out.println("Error in Timing");
-//		}
-		
-		Insertionsort is = new Insertionsort();
-		System.loadLibrary("insertionsort");
-		insertionSortedElements = is.insertSort(nums);
+			System.out.println("Please Enter the Output Filename (ex. <\"filename\".txt>)");
+			outputFilename = console.readLine();
+
+			System.out.println("Please Enter the Failure Probability(ex. 0.44)");
+			failureProbability = Double.parseDouble(console.readLine());
+			
+			System.out.println("Please Enter the Time Limit in Seconds (ex. 5)");
+			timeLimit_seconds = console.read();
+			
+			// Create executive, read the input data, create the adjudicator
+			Executive exec = new Executive();
+			int[] nums = exec.read_data(inputFilename);
+			Adjudicator adj = new Adjudicator(nums);
+			
+			// Create Primary and run with watchdog timer
+			HeapsortThread primaryThread = new HeapsortThread(nums);
+			Timer sortingTimer = new Timer();
+			Watchdog watchdogTimer = new Watchdog(primaryThread);
+			sortingTimer.schedule(watchdogTimer, timeLimit_seconds * 1000);
+			primaryThread.start();
+
+			try {
+				primaryThread.join();
+				sortingTimer.cancel();
+			}
+			catch (InterruptedException e) {
+				e.printStackTrace();
+				System.out.println("Error in Timing");
+			}
+			System.out.println("---------------------");
+			if (watchdogTimer.hasStopped() /**|| !adj.acceptanceTest(nums)*/ /** || failure check here*/) {
+				System.out.println("----Stopped----");
+//				nums = exec.read_data(inputFilename);
+//				Insertionsort backupThread = new Insertionsort();
+//				watchdogTimer = new Watchdog(backupThread);
+//				System.loadLibrary("insertionsort");
+//				insertionSortedElements = backupThread.insertSort(nums);
+//				sortingTimer.schedule(watchdogTimer, timeLimit_seconds * 1000);
+//				backupThread.start();
+			}
+			
+			if (watchdogTimer.hasStopped() || !adj.acceptanceTest(nums) /** || failure check here*/) {
+//				throw 
+			}
+			
+		} catch (IOException inputError) {
+			inputError.printStackTrace();
+			System.out.println("Couldn't read line");
+		}
 	}
 }
 

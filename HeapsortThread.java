@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class HeapsortThread extends Thread{
+public class HeapsortThread extends Thread {
 	
 	private int[] listToSort;
 	private Heapsort sorter;
