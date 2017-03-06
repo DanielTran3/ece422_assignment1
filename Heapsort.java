@@ -1,15 +1,13 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Random;
 
 public class Heapsort {
 
+	private int num_mem_accesses = 0;
+	
 	// Re-heapify the heap after the largest element in the heap was removed
-	void heapFilterDown(ArrayList<Integer> data_list, int root_pointer, int nodePos) {
+	void heapFilterDown(int[] data_list, int root_pointer, int nodePos) {
 		int leftChildPos;
 		int rightChildPos;
-		int temp;
 		int rootPointerVal;
 		int leftChildVal;
 		int rightChildVal;
@@ -24,9 +22,10 @@ public class Heapsort {
 				break;
 			}
 
-			rootPointerVal = data_list.get(root_pointer);
-			leftChildVal = data_list.get(leftChildPos);
-			rightChildVal = data_list.get(rightChildPos);
+			rootPointerVal = data_list[root_pointer];
+			leftChildVal = data_list[leftChildPos];
+			rightChildVal = data_list[rightChildPos];
+			num_mem_accesses += 3;
 
 			// If the node is larger than its children, then break, as it is in the
 			// correct position
@@ -73,16 +72,16 @@ public class Heapsort {
 		}
 	}
 
-	public void swapper(ArrayList<Integer> data_list, int pos1, int pos2) {
-		int temp = data_list.get(pos1);
-		data_list.set(pos1, data_list.get(pos2));
-		data_list.set(pos2, temp);
+	public void swapper(int[] data_list, int pos1, int pos2) {
+		int temp = data_list[pos1];
+		data_list[pos1] = data_list[pos2];
+		data_list[pos2] = temp;
+		num_mem_accesses += 3;
 	}
-
+	
 	// Function builds the heap as new nodes get added in.
-	public void heapFilterUp(ArrayList<Integer> data_list, int nodePos) {
+	public void heapFilterUp(int[] data_list, int nodePos) {
 		int parentPos;
-		int temp;
 		int nodeVal;
 		int parentVal;
 
@@ -91,8 +90,8 @@ public class Heapsort {
 			// example: 3.5 -> 3
 			parentPos = (nodePos-1)/2;
 
-			nodeVal = data_list.get(nodePos);
-			parentVal = data_list.get(parentPos);
+			nodeVal = data_list[nodePos];
+			parentVal = data_list[parentPos];
 
 			// Swap the node with its parent if the added node is larger then the parent
 			if (nodeVal > parentVal) {
@@ -106,12 +105,11 @@ public class Heapsort {
 		}
 
 	}
-
-	public void heapSort(ArrayList<Integer> data) {
+	
+	public void heapSort(int[] data, double probFail) {
 		int i;
-		int size = data.size();
+		int size = data.length;
 		int node;
-		int temp;
 
 		// Build the heap up
 		for (node = 0; node < size; node++) {
@@ -126,40 +124,15 @@ public class Heapsort {
 			node--;
 			heapFilterDown(data, 0, node);
 		}
-	}
-
-	public ArrayList<Integer> read_data(String filename) {
-		ArrayList<Integer> data_list = new ArrayList<Integer>();
-
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(filename));
-			String line = br.readLine();
-			while (line != null) {
-				data_list.add(Integer.valueOf(line));
-				line = br.readLine();
-			}
-		}
-
-		catch (IOException e) {
-			System.out.println("Could not read data!");
-			e.printStackTrace();
-		}
-		return data_list;
-	}
-
-	public static void main(String[] args) {
-		Heapsort h = new Heapsort();
-		ArrayList<Integer> data = new ArrayList<Integer>();
-		data = h.read_data(args[0]);
-
-		for (Integer i : data) {
-			System.out.println(i.toString());
-		}
-		h.heapSort(data);
-		System.out.println("-----------------------------------------------");
-
-		for (Integer i : data) {
-			System.out.println(i.toString());
+		
+		double hazard = probFail * num_mem_accesses;
+		Random rFail = new Random();
+		double randomValue = rFail.nextDouble();
+		System.out.println(hazard);
+		System.out.println(randomValue);
+		if ((randomValue >= 0.5) && (randomValue <= (0.5 + hazard))) {
+			data[0] = -1;
+			System.out.println(data.length);
 		}
 	}
 }

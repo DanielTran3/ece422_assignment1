@@ -2,7 +2,7 @@ import java.util.TimerTask;
 
 public class Watchdog extends TimerTask{
 	Thread watched;
-	Boolean stopped;
+	Boolean stopped = false;
 	
 	public Watchdog(Thread target) {
 		watched = target;

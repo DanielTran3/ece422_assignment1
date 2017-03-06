@@ -85,7 +85,7 @@ public class Data_Sorter {
 			Adjudicator adj = new Adjudicator(nums);
 			
 			// Create Primary and run with watchdog timer
-			HeapsortThread primaryThread = new HeapsortThread(nums);
+			HeapsortThread primaryThread = new HeapsortThread(nums, failureProbability);
 			Timer sortingTimer = new Timer();
 			Watchdog watchdogTimer = new Watchdog(primaryThread);
 			sortingTimer.schedule(watchdogTimer, timeLimit_seconds * 1000);
@@ -100,7 +100,18 @@ public class Data_Sorter {
 				System.out.println("Error in Timing");
 			}
 			System.out.println("---------------------");
-			if (watchdogTimer.hasStopped() /**|| !adj.acceptanceTest(nums)*/ /** || failure check here*/) {
+			System.out.println(nums);
+
+			if (nums[0] == -1 || watchdogTimer.hasStopped() || !adj.acceptanceTest(nums)) {
+				if (nums[0] == -1) {
+					System.out.println("Primary Sort Failed");
+				}
+				else if (watchdogTimer.hasStopped()) {
+					System.out.println("Primary Sort Failed to Complete On Time");
+				}
+				else if (!adj.acceptanceTest(nums)) {
+					System.out.println("Primary Sort Failed Acceptance Test");
+				}
 				System.out.println("----Stopped----");
 //				nums = exec.read_data(inputFilename);
 //				Insertionsort backupThread = new Insertionsort();

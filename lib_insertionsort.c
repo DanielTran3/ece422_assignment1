@@ -11,7 +11,7 @@
 //	fp = fopen(filename, "r");
 //	fscanf(fp, "%i", data_array[0]);
 //	while () {
-//		
+//
 //}
 
 jint* insertion_sort(jint *, jsize);
@@ -29,7 +29,7 @@ JNIEXPORT jintArray JNICALL Java_Insertionsort_insertSort
 	if (len == NULL) {
 		printf("Cannot get length\n");
 	    exit(0);
-	}	
+	}
 	result = (*env)->NewIntArray(env, len);
 	if (result == NULL) {
 		printf("Cannot create new empty array\n");
@@ -59,19 +59,17 @@ JNIEXPORT jintArray JNICALL Java_Insertionsort_insertSort
 jint* insertion_sort(jint *array_to_sort, jsize array_len){
 
 	int sorted_pointer = 1;
-	int elementValue;	
+	int elementValue;
 	int hole;
 
 	for (sorted_pointer = 1; sorted_pointer < array_len; sorted_pointer++) {
 		elementValue = array_to_sort[sorted_pointer];
 		hole = sorted_pointer;
-		
+
 		while((hole > 0) && (array_to_sort[hole - 1] > elementValue)) {
 			array_to_sort[hole] = array_to_sort[hole - 1];
 			hole--;
 		}
 		array_to_sort[hole] = elementValue;
-	} 
+	}
 }
-
-
