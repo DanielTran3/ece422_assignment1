@@ -1,10 +1,14 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Data_Generator {
 
+	public Data_Generator() {}
+	
 	public void gen_numbers(String filename, int num_elements) {
 		int random_number;
 		int counter = 0;
@@ -36,29 +40,45 @@ public class Data_Generator {
 
 	public static void main(String[] args) {
 		
-		if (args.length != 2) {
-			System.out.println("Please Enter Only Two Inputs: Filename to write (ex. <\"filename\".txt>) to and number of elements to generate");
-			System.exit(0);
+//		if (args.length != 2) {
+//			System.out.println("Please Enter Only Two Inputs: Filename to write (ex. <\"filename\".txt>) to and number of elements to generate");
+//			System.exit(0);
+//		}
+
+		String filename;
+		String num_ints;
+		
+		BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+		
+		try {
+			System.out.println("Please Enter the Input Filename (ex. <\"filename\".txt>)");
+			filename = console.readLine();
+			
+			System.out.println("Please Enter the Number of Integers to Generate (ex. 20)");
+			num_ints = console.readLine();
+			
+
+			System.out.println("Your Filename: " + filename);
+			System.out.println("Your Number of Integers: " + num_ints);
+	
+			Data_Generator dg = new Data_Generator();
+	
+			if (!dg.invalidFilename(filename)) {
+				System.out.println("Please enter a valid file name: <\"filename\".txt>");
+				System.exit(0);
+			}
+	
+			if (!num_ints.matches("[0-9]+")) {
+				 System.out.println("Please enter a valid number of elements");
+				 System.exit(0);
+			}
+	
+			dg.gen_numbers(filename, Integer.parseInt(num_ints));
 		}
-
-		String filename = args[0];
-		String num_ints = args[1];
-
-		System.out.println("Your Filename: " + filename);
-		System.out.println("Your Number of Integers: " + num_ints);
-
-		Data_Generator dg = new Data_Generator();
-
-		if (!dg.invalidFilename(filename)) {
-			System.out.println("Please enter a valid file name: <\"filename\".txt>");
-			System.exit(0);
+		
+		catch (IOException io) {
+			io.printStackTrace();
+			System.out.println("Error in Generating File");
 		}
-
-		if (!num_ints.matches("[0-9]+")) {
-			 System.out.println("Please enter a valid number of elements");
-			 System.exit(0);
-		}
-
-		dg.gen_numbers(filename, Integer.parseInt(num_ints));
 	}
 }

@@ -1,16 +1,17 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
-public class Executive {
+public class Data_Sorter {
 	
-	public Executive() {
-		
-	}
+	public Data_Sorter() {}
 	
 	public int[] read_data(String filename) {
 		List<Integer> data_List = new ArrayList<>();
@@ -34,6 +35,21 @@ public class Executive {
 		int[] data_intArray = data_List.stream().mapToInt(i->i).toArray();
 		
 		return data_intArray;
+	}
+	
+	public void write_data(String filename, int[] data) {
+		try {
+			PrintWriter writer = new PrintWriter(filename);
+			
+			for (int value : data) {
+				writer.println(Integer.toString(value));
+			}
+			writer.close();
+		}
+		catch(IOException e) {
+			System.out.println("Couldn't write to File!");
+			e.printStackTrace();
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -64,7 +80,7 @@ public class Executive {
 			timeLimit_seconds = console.read();
 			
 			// Create executive, read the input data, create the adjudicator
-			Executive exec = new Executive();
+			Data_Sorter exec = new Data_Sorter();
 			int[] nums = exec.read_data(inputFilename);
 			Adjudicator adj = new Adjudicator(nums);
 			
@@ -94,7 +110,9 @@ public class Executive {
 //				sortingTimer.schedule(watchdogTimer, timeLimit_seconds * 1000);
 //				backupThread.start();
 			}
-			
+			else {
+				exec.write_data(outputFilename, nums);
+			}
 			if (watchdogTimer.hasStopped() || !adj.acceptanceTest(nums) /** || failure check here*/) {
 //				throw 
 			}
@@ -106,7 +124,7 @@ public class Executive {
 	}
 }
 
-//Thread sortingThread = new Thread(new Executive(), "sortingThread");
+//Thread sortingThread = new Thread(new Data_Sorter(), "sortingThread");
 
 // Another way to make a thread (inside main)
 //Thread sortingThread = new Thread(new Runnable() {
@@ -118,8 +136,8 @@ public class Executive {
 //});
 //sortingThread.start();
 
-// Another way, if the Executive class extends Thread
-//public Executive(String threadname) {
+// Another way, if the Data_Sorter class extends Thread
+//public Data_Sorter(String threadname) {
 //	super(threadname);
 //	System.out.println(this);
 //	start();

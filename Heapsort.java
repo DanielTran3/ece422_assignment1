@@ -5,10 +5,13 @@ import java.util.ArrayList;
 
 public class Heapsort {
 
+	private int num_mem_accesses = 0;
+	
 	public void swapper(int[] data_list, int pos1, int pos2) {
 		int temp = data_list[pos1];
 		data_list[pos1] = data_list[pos2];
 		data_list[pos2] = temp;
+		num_mem_accesses += 3;
 	}
 
 	// Function builds the heap as new nodes get added in.
@@ -20,7 +23,8 @@ public class Heapsort {
 		// If the left child is larger than the root
 		if ((leftChildPos < unsorted_array_size) &&
 			 data_list[largestElementPos] < data_list[leftChildPos]) {
-				 largestElementPos = leftChildPos;
+				num_mem_accesses += 2;
+				largestElementPos = leftChildPos;
 			 }
 		if ((rightChildPos < unsorted_array_size) &&
 			 data_list[largestElementPos] < data_list[rightChildPos]) {
