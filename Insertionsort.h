@@ -9,11 +9,11 @@ extern "C" {
 #endif
 /*
  * Class:     Insertionsort
- * Method:    sort
- * Signature: (Ljava/util/ArrayList;)Ljava/util/ArrayList;
+ * Method:    insertSort
+ * Signature: ([ID)[I
  */
-JNIEXPORT jobject JNICALL Java_Insertionsort_sort
-  (JNIEnv *, jobject, jobject);
+JNIEXPORT jintArray JNICALL Java_Insertionsort_insertSort
+  (JNIEnv *, jobject, jintArray, jdouble);
 
 #ifdef __cplusplus
 }

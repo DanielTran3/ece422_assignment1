@@ -14,22 +14,22 @@
 //
 //}
 
-jint* insertion_sort(jint *, jsize);
+jint* insertion_sort(jint *, jsize, jdouble);
 
 /* Recursive binary search function */
 
 JNIEXPORT jintArray JNICALL Java_Insertionsort_insertSort
-  (JNIEnv *env, jobject object, jintArray array_to_sort) {
+  (JNIEnv *env, jobject object, jintArray array_to_sort, jdouble failureProb) {
 	jsize len;
 	jint *array_copy;
 	jboolean *is_copy = 0;
 	jintArray result;
 
 	len = (*env)->GetArrayLength(env, array_to_sort);
-	if (len == NULL) {
-		printf("Cannot get length\n");
-	    exit(0);
-	}
+//	if (len == NULL) {
+//		printf("Cannot get length\n");
+//	    exit(0);
+//	}
 	result = (*env)->NewIntArray(env, len);
 	if (result == NULL) {
 		printf("Cannot create new empty array\n");
@@ -42,7 +42,7 @@ JNIEXPORT jintArray JNICALL Java_Insertionsort_insertSort
 	    exit(0);
 	}
 
-    array_copy = insertion_sort(array_copy, len);
+    array_copy = insertion_sort(array_copy, len, failureProb);
 
 	(*env)->SetIntArrayRegion(env, result, 0, len, array_copy);
 	if (result == NULL) {
@@ -56,20 +56,28 @@ JNIEXPORT jintArray JNICALL Java_Insertionsort_insertSort
 
 /*---------------------------------------------------------------*/
 
-jint* insertion_sort(jint *array_to_sort, jsize array_len){
+jint* insertion_sort(jint *array_to_sort, jsize array_len, jdouble probFail){
 
 	int sorted_pointer = 1;
 	int elementValue;
 	int hole;
+	int num_mem_accesses = 0;	
 
 	for (sorted_pointer = 1; sorted_pointer < array_len; sorted_pointer++) {
 		elementValue = array_to_sort[sorted_pointer];
+		num_mem_accesses++;		
 		hole = sorted_pointer;
 
 		while((hole > 0) && (array_to_sort[hole - 1] > elementValue)) {
 			array_to_sort[hole] = array_to_sort[hole - 1];
+			num_mem_accesses += 3;			
 			hole--;
 		}
 		array_to_sort[hole] = elementValue;
+		num_mem_accesses++;	
 	}
+	
+//	double hazard = probFail * num_mem_accesses;
+//	srand(time(NULL));
+//	double randomValue = (double) 
 }

@@ -79,40 +79,50 @@ public class Data_Sorter {
 			System.out.println("Please Enter the Time Limit in Seconds (ex. 5)");
 			timeLimit_seconds = console.read();
 			
-			// Create executive, read the input data, create the adjudicator
+//			int[] insertionSortedElements;
 			Data_Sorter exec = new Data_Sorter();
 			int[] nums = exec.read_data(inputFilename);
-			Adjudicator adj = new Adjudicator(nums);
-			
-			// Create Primary and run with watchdog timer
-			HeapsortThread primaryThread = new HeapsortThread(nums, failureProbability);
-			Timer sortingTimer = new Timer();
-			Watchdog watchdogTimer = new Watchdog(primaryThread);
-			sortingTimer.schedule(watchdogTimer, timeLimit_seconds * 1000);
-			primaryThread.start();
+			InsertionsortThread backupThread = new InsertionsortThread(nums, failureProbability);
+//			watchdogTimer = new Watchdog(backupThread);
+			System.loadLibrary("insertionsort");
+//			insertionSortedElements = backupThread.insertSort(nums);
+//			sortingTimer.schedule(watchdogTimer, timeLimit_seconds * 1000);
+			backupThread.start();
 
-			try {
-				primaryThread.join();
-				sortingTimer.cancel();
-			}
-			catch (InterruptedException e) {
-				e.printStackTrace();
-				System.out.println("Error in Timing");
-			}
-			System.out.println("---------------------");
-			System.out.println(nums);
-
-			if (nums[0] == -1 || watchdogTimer.hasStopped() || !adj.acceptanceTest(nums)) {
-				if (nums[0] == -1) {
-					System.out.println("Primary Sort Failed");
-				}
-				else if (watchdogTimer.hasStopped()) {
-					System.out.println("Primary Sort Failed to Complete On Time");
-				}
-				else if (!adj.acceptanceTest(nums)) {
-					System.out.println("Primary Sort Failed Acceptance Test");
-				}
-
+//			// Create executive, read the input data, create the adjudicator
+//			Data_Sorter exec = new Data_Sorter();
+//			int[] nums = exec.read_data(inputFilename);
+//			Adjudicator adj = new Adjudicator(nums);
+//			
+//			// Create Primary and run with watchdog timer
+//			HeapsortThread primaryThread = new HeapsortThread(nums, failureProbability);
+//			Timer sortingTimer = new Timer();
+//			Watchdog watchdogTimer = new Watchdog(primaryThread);
+//			sortingTimer.schedule(watchdogTimer, timeLimit_seconds * 1000);
+//			primaryThread.start();
+//
+//			try {
+//				primaryThread.join();
+//				sortingTimer.cancel();
+//			}
+//			catch (InterruptedException e) {
+//				e.printStackTrace();
+//				System.out.println("Error in Timing");
+//			}
+//			System.out.println("---------------------");
+//			System.out.println(nums);
+//
+//			if (nums[0] == -1 || watchdogTimer.hasStopped() || !adj.acceptanceTest(nums)) {
+//				if (nums[0] == -1) {
+//					System.out.println("Primary Sort Failed");
+//				}
+//				else if (watchdogTimer.hasStopped()) {
+//					System.out.println("Primary Sort Failed to Complete On Time");
+//				}
+//				else if (!adj.acceptanceTest(nums)) {
+//					System.out.println("Primary Sort Failed Acceptance Test");
+//				}
+//
 //				nums = exec.read_data(inputFilename);
 //				InsertionsortThread backupThread = new InsertionsortThread();
 //				watchdogTimer = new Watchdog(backupThread);
@@ -120,13 +130,13 @@ public class Data_Sorter {
 //				insertionSortedElements = backupThread.insertSort(nums);
 //				sortingTimer.schedule(watchdogTimer, timeLimit_seconds * 1000);
 //				backupThread.start();
-			}
-			else {
-				exec.write_data(outputFilename, nums);
-			}
-			if (watchdogTimer.hasStopped() || !adj.acceptanceTest(nums) /** || failure check here*/) {
+//			}
+//			else {
+//				exec.write_data(outputFilename, nums);
+//			}
+//			if (watchdogTimer.hasStopped() || !adj.acceptanceTest(nums) /** || failure check here*/) {
 //				throw 
-			}
+//			}
 			
 		} catch (IOException inputError) {
 			inputError.printStackTrace();
