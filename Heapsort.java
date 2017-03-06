@@ -34,7 +34,7 @@ public class Heapsort {
 		}
 	}
 
-	public void heapSort(int[] data, double probFail) {
+	public int heapSort(int[] data, double probFail) {
 		int size = data.length;
 
 		// Build the heap up
@@ -55,8 +55,9 @@ public class Heapsort {
 		System.out.println(hazard);
 		System.out.println(randomValue);
 		if ((randomValue >= 0.5) && (randomValue <= (0.5 + hazard))) {
-			data[0] = -1;
-			System.out.println(data.length);
+			return 0;
 		}
+		
+		return 1;
 	}
 }

@@ -53,76 +53,54 @@ public class Data_Sorter {
 	}
 	
 	public static void main(String[] args) {
-//		if (args.length != 4) {
-//			System.out.println("Please Enter Only Four Inputs: Input Filename, Output Filename, Failure Probability, and Time Limit");
-//			System.exit(0);
-//		}
+		if (args.length != 4) {
+			System.out.println("Please Enter Only Four Inputs: Input Filename, Output Filename, Failure Probability, and Time Limit");
+			System.exit(0);
+		}
 		
-//		int[] insertionSortedElements;
 		String inputFilename;
 		String outputFilename;
 		double failureProbability;
 		int timeLimit_seconds;
 		
-		BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+		inputFilename = args[0];
+		outputFilename = args[1];
+		failureProbability = Double.parseDouble(args[2]);
+		timeLimit_seconds = Integer.parseInt(args[3]);
 		
-		try {
-			System.out.println("Please Enter the Input Filename (ex. <\"filename\".txt>)");
-			inputFilename = console.readLine();
-
-			System.out.println("Please Enter the Output Filename (ex. <\"filename\".txt>)");
-			outputFilename = console.readLine();
-
-			System.out.println("Please Enter the Failure Probability(ex. 0.44)");
-			failureProbability = Double.parseDouble(console.readLine());
-			
-			System.out.println("Please Enter the Time Limit in Seconds (ex. 5)");
-			timeLimit_seconds = console.read();
-			
-//			int[] insertionSortedElements;
-			Data_Sorter exec = new Data_Sorter();
-			int[] nums = exec.read_data(inputFilename);
-			InsertionsortThread backupThread = new InsertionsortThread(nums, failureProbability);
-//			watchdogTimer = new Watchdog(backupThread);
-			System.loadLibrary("insertionsort");
-//			insertionSortedElements = backupThread.insertSort(nums);
-//			sortingTimer.schedule(watchdogTimer, timeLimit_seconds * 1000);
-			backupThread.start();
-
 //			// Create executive, read the input data, create the adjudicator
-//			Data_Sorter exec = new Data_Sorter();
-//			int[] nums = exec.read_data(inputFilename);
-//			Adjudicator adj = new Adjudicator(nums);
-//			
-//			// Create Primary and run with watchdog timer
-//			HeapsortThread primaryThread = new HeapsortThread(nums, failureProbability);
-//			Timer sortingTimer = new Timer();
-//			Watchdog watchdogTimer = new Watchdog(primaryThread);
-//			sortingTimer.schedule(watchdogTimer, timeLimit_seconds * 1000);
-//			primaryThread.start();
-//
-//			try {
-//				primaryThread.join();
-//				sortingTimer.cancel();
-//			}
-//			catch (InterruptedException e) {
-//				e.printStackTrace();
-//				System.out.println("Error in Timing");
-//			}
-//			System.out.println("---------------------");
-//			System.out.println(nums);
-//
-//			if (nums[0] == -1 || watchdogTimer.hasStopped() || !adj.acceptanceTest(nums)) {
-//				if (nums[0] == -1) {
-//					System.out.println("Primary Sort Failed");
-//				}
-//				else if (watchdogTimer.hasStopped()) {
-//					System.out.println("Primary Sort Failed to Complete On Time");
-//				}
-//				else if (!adj.acceptanceTest(nums)) {
-//					System.out.println("Primary Sort Failed Acceptance Test");
-//				}
-//
+		Data_Sorter exec = new Data_Sorter();
+		int[] nums = exec.read_data(inputFilename);
+		Adjudicator adj = new Adjudicator(nums);
+		
+		// Create Primary and run with watchdog timer
+		HeapsortThread primaryThread = new HeapsortThread(nums, failureProbability);
+		Timer sortingTimer = new Timer();
+		Watchdog watchdogTimer = new Watchdog(primaryThread);
+		sortingTimer.schedule(watchdogTimer, timeLimit_seconds * 1000);
+		primaryThread.start();
+
+		try {
+			primaryThread.join();
+			sortingTimer.cancel();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+			System.out.println("Error in Timing");
+		}
+		System.out.println("---------------------");
+
+		if (primaryThread.threadFail() || watchdogTimer.hasStopped() || !adj.acceptanceTest(nums)) {
+			if (primaryThread.threadFail()) {
+				System.out.println("Primary Sort Failed");
+			}
+			else if (watchdogTimer.hasStopped()) {
+				System.out.println("Primary Sort Failed to Complete On Time");
+			}
+			else if (!adj.acceptanceTest(nums)) {
+				System.out.println("Primary Sort Failed Acceptance Test");
+			}
+
 //				nums = exec.read_data(inputFilename);
 //				InsertionsortThread backupThread = new InsertionsortThread();
 //				watchdogTimer = new Watchdog(backupThread);
@@ -130,7 +108,7 @@ public class Data_Sorter {
 //				insertionSortedElements = backupThread.insertSort(nums);
 //				sortingTimer.schedule(watchdogTimer, timeLimit_seconds * 1000);
 //				backupThread.start();
-//			}
+		}
 //			else {
 //				exec.write_data(outputFilename, nums);
 //			}
@@ -138,10 +116,6 @@ public class Data_Sorter {
 //				throw 
 //			}
 			
-		} catch (IOException inputError) {
-			inputError.printStackTrace();
-			System.out.println("Couldn't read line");
-		}
 	}
 }
 

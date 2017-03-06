@@ -5,6 +5,7 @@ public class HeapsortThread extends Thread {
 	private int[] listToSort;
 	private Heapsort sorter;
 	private double failureProbability;
+	private int failFlag;
 	
 	public HeapsortThread(int[] list_to_sort, double failChance) {
 		this.listToSort = list_to_sort;
@@ -15,18 +16,23 @@ public class HeapsortThread extends Thread {
 	public void run() {
 		
 		try {
-			sorter.heapSort(listToSort, failureProbability);
-			if (listToSort[0] != -1) {
-				for (Integer i : listToSort) {
-					System.out.println(i.toString());
-				}	
+			failFlag = sorter.heapSort(listToSort, failureProbability);
+			if (failFlag == 0) {
+				Thread.currentThread().stop();
 			}
-			
 		}
 		
 		catch (ThreadDeath td) {
 			System.out.println("Thread died");
 			throw new ThreadDeath();
 		}
+	}
+	
+	public boolean threadFail() {
+		if (this.failFlag == 0) {
+			return true;
+		}
+		
+		return false;
 	}
 }
