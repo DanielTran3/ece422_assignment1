@@ -18,14 +18,18 @@ jint* insertion_sort(jint *, jsize);
 
 /* Recursive binary search function */
 
-JNIEXPORT jintArray JNICALL Java_Insertionsort_sort
+JNIEXPORT jintArray JNICALL Java_Insertionsort_insertSort
   (JNIEnv *env, jobject object, jintArray array_to_sort) {
 	jsize len;
 	jint *array_copy;
 	jboolean *is_copy = 0;
 	jintArray result;
 
-	len = (*env)->GetArrayLength(env, array_to_sort);	
+	len = (*env)->GetArrayLength(env, array_to_sort);
+	if (len == NULL) {
+		printf("Cannot get length\n");
+	    exit(0);
+	}	
 	result = (*env)->NewIntArray(env, len);
 	if (result == NULL) {
 		printf("Cannot create new empty array\n");
@@ -41,6 +45,10 @@ JNIEXPORT jintArray JNICALL Java_Insertionsort_sort
     array_copy = insertion_sort(array_copy, len);
 
 	(*env)->SetIntArrayRegion(env, result, 0, len, array_copy);
+	if (result == NULL) {
+		printf("Error in converting data\n");
+	    exit(0);
+	}
 
     return result;
 

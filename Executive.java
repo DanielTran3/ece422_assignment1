@@ -43,26 +43,27 @@ public class Executive {
 		
 
 		Executive exec = new Executive();
-		int[] nums = exec.read_data(args[0]);
-//		ArrayList<Integer> insertionSortedElements = new ArrayList<Integer>();
+		int[] nums = {2, 1, 4};	
+		//int[] nums = exec.read_data(args[0]);
+		int[] insertionSortedElements;
 		
-		HeapsortThread sortingThread = new HeapsortThread(nums);
-		Timer sortingTimer = new Timer();
-		Watchdog watchdogTimer = new Watchdog(sortingThread);
-		sortingTimer.schedule(watchdogTimer, 1000);
-		sortingThread.start();
-		try {
-			sortingThread.join();
-			sortingTimer.cancel();
-		}
-		catch (InterruptedException e) {
-			e.printStackTrace();
-			System.out.println("Error in Timing");
-		}
+//		HeapsortThread sortingThread = new HeapsortThread(nums);
+//		Timer sortingTimer = new Timer();
+//		Watchdog watchdogTimer = new Watchdog(sortingThread);
+//		sortingTimer.schedule(watchdogTimer, 1000);
+//		sortingThread.start();
+//		try {
+//			sortingThread.join();
+//			sortingTimer.cancel();
+//		}
+//		catch (InterruptedException e) {
+//			e.printStackTrace();
+//			System.out.println("Error in Timing");
+//		}
 		
-//		Insertionsort is = new Insertionsort();
-//		System.loadLibrary("sort");
-//		insertionSortedElements = is.sort(nums);
+		Insertionsort is = new Insertionsort();
+		System.loadLibrary("insertionsort");
+		insertionSortedElements = is.insertSort(nums);
 	}
 }
 
