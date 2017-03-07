@@ -61,7 +61,7 @@ public class Data_Sorter {
 		String inputFilename = args[0];
 		String outputFilename = args[1];
 		float failureProbability = Float.parseFloat(args[2]);
-		int timeLimit_seconds = Integer.parseInt(args[3]);
+		int timeLimit_milli = Integer.parseInt(args[3]);
 		
 //			// Create executive, read the input data, create the adjudicator
 		Data_Sorter exec = new Data_Sorter();
@@ -72,7 +72,7 @@ public class Data_Sorter {
 		HeapsortThread primaryThread = new HeapsortThread(nums, failureProbability);
 		Timer sortingTimer = new Timer();
 		Watchdog watchdogTimer = new Watchdog(primaryThread);
-		sortingTimer.schedule(watchdogTimer, timeLimit_seconds * 1000);
+		sortingTimer.schedule(watchdogTimer, timeLimit_milli);
 		primaryThread.start();
 		
 		try {
@@ -104,7 +104,7 @@ public class Data_Sorter {
 			// Restart watchdog timer and schedule timer for the backup variant
 			watchdogTimer = new Watchdog(backupThread);
 			sortingTimer = new Timer();
-			sortingTimer.schedule(watchdogTimer, timeLimit_seconds * 1000);
+			sortingTimer.schedule(watchdogTimer, timeLimit_milli);
 			
 			// Load the insertion sort native variable
 			System.loadLibrary("insertionsort");
