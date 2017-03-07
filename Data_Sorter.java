@@ -76,25 +76,25 @@ public class Data_Sorter {
 		
 		// Check for a valid input filename
 		if (!exec.invalidFilename(args[0])) {
-			System.out.println("Please enter a valid file name: <\"filename\".txt>");
+			System.out.println("Please enter a valid input file name: <\"filename\".txt>");
 			System.exit(0);
 		}
 
 		// Check for a valid output filename
 		if (!exec.invalidFilename(args[1])) {
-			System.out.println("Please enter a valid file name: <\"filename\".txt>");
+			System.out.println("Please enter a valid output file name: <\"filename\".txt>");
 			System.exit(0);
 		}
 
 		// Check if the probability input contains numbers only
 		if (!args[2].matches("[0-9.]+")) {
-			 System.out.println("Please enter a valid number of elements");
+			 System.out.println("Please enter a valid probability");
 			 System.exit(0);
 		}
 
 		// Check if the time is in numbers
 		if (!args[3].matches("[0-9]+")) {
-			 System.out.println("Please enter a valid number of elements");
+			 System.out.println("Please enter a valid time limit");
 			 System.exit(0);
 		}
 		// Read input parameters
