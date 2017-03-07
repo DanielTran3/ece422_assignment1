@@ -1,10 +1,9 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -58,15 +57,11 @@ public class Data_Sorter {
 			System.exit(0);
 		}
 		
-		String inputFilename;
-		String outputFilename;
-		double failureProbability;
-		int timeLimit_seconds;
-		
-		inputFilename = args[0];
-		outputFilename = args[1];
-		failureProbability = Double.parseDouble(args[2]);
-		timeLimit_seconds = Integer.parseInt(args[3]);
+		// Read input parameters
+		String inputFilename = args[0];
+		String outputFilename = args[1];
+		float failureProbability = Float.parseFloat(args[2]);
+		int timeLimit_seconds = Integer.parseInt(args[3]);
 		
 //			// Create executive, read the input data, create the adjudicator
 		Data_Sorter exec = new Data_Sorter();
@@ -79,16 +74,15 @@ public class Data_Sorter {
 		Watchdog watchdogTimer = new Watchdog(primaryThread);
 		sortingTimer.schedule(watchdogTimer, timeLimit_seconds * 1000);
 		primaryThread.start();
-
+		
 		try {
 			primaryThread.join();
 			sortingTimer.cancel();
 		}
 		catch (InterruptedException e) {
 			e.printStackTrace();
-			System.out.println("Error in Timing");
+			System.out.println("Primary Thread Failed to Join");
 		}
-		System.out.println("---------------------");
 
 		if (primaryThread.threadFail() || watchdogTimer.hasStopped() || !adj.acceptanceTest(nums)) {
 			if (primaryThread.threadFail()) {
@@ -100,46 +94,60 @@ public class Data_Sorter {
 			else if (!adj.acceptanceTest(nums)) {
 				System.out.println("Primary Sort Failed Acceptance Test");
 			}
-
-//				nums = exec.read_data(inputFilename);
-//				InsertionsortThread backupThread = new InsertionsortThread();
-//				watchdogTimer = new Watchdog(backupThread);
-//				System.loadLibrary("insertionsort");
-//				insertionSortedElements = backupThread.insertSort(nums);
-//				sortingTimer.schedule(watchdogTimer, timeLimit_seconds * 1000);
-//				backupThread.start();
+			
+			// Restore Checkpoint
+			nums = exec.read_data(inputFilename);
+			
+			// Start backup thread (insertion sort)
+			InsertionsortThread backupThread = new InsertionsortThread(nums, failureProbability);
+			
+			// Restart watchdog timer and schedule timer for the backup variant
+			watchdogTimer = new Watchdog(backupThread);
+			sortingTimer.schedule(watchdogTimer, timeLimit_seconds * 1000);
+			
+			// Load the insertion sort native variable
+			System.loadLibrary("insertionsort");
+			
+			// Start backup variant
+			backupThread.start();
+			
+			try {
+				backupThread.join();
+				sortingTimer.cancel();
+			}
+			catch (InterruptedException e) {
+				e.printStackTrace();
+				System.out.println("Backup Thread Failed to Join");
+			}
+			
+			if (backupThread.threadFail() || watchdogTimer.hasStopped() || !adj.acceptanceTest(nums)) {
+				if (backupThread.threadFail()) {
+					System.out.println("Primary Sort Failed");
+				}
+				else if (watchdogTimer.hasStopped()) {
+					System.out.println("Primary Sort Failed to Complete On Time");
+				}
+				else if (!adj.acceptanceTest(nums)) {
+					System.out.println("Primary Sort Failed Acceptance Test");
+				}
+				
+				File file = new File(outputFilename);
+				try {
+					Files.deleteIfExists(file.toPath());
+				} catch (IOException e) {
+					e.printStackTrace();
+					System.out.println("File cannot be deleted");
+				}
+			}
+			
+			else {
+				exec.write_data(outputFilename, nums);
+			}
 		}
-//			else {
-//				exec.write_data(outputFilename, nums);
-//			}
-//			if (watchdogTimer.hasStopped() || !adj.acceptanceTest(nums) /** || failure check here*/) {
-//				throw 
-//			}
+		else {
+			exec.write_data(outputFilename, nums);
+		}
+		
 			
 	}
 }
-
-//Thread sortingThread = new Thread(new Data_Sorter(), "sortingThread");
-
-// Another way to make a thread (inside main)
-//Thread sortingThread = new Thread(new Runnable() {
-//public void run() {
-//	while(true) {
-//		System.out.println("*** Hello from Sorting Thread ***");
-//	}
-//}
-//});
-//sortingThread.start();
-
-// Another way, if the Data_Sorter class extends Thread
-//public Data_Sorter(String threadname) {
-//	super(threadname);
-//	System.out.println(this);
-//	start();
-//}
-//
-//public void run() {
-//	for (int i = 0; i < 20; i++) {
-//		System.out.println(Thread.currentThread().getName());
-//	}
-//}
