@@ -13,6 +13,7 @@ public class InsertionsortThread extends Thread{
 
 	public void run() {
 
+		// Run insertionsort and set the flag to determine a fail or not
 		try {
 			failFlag = sorter.insertSort(listToSort, failureProbability);
 			if (failFlag == 0) {
@@ -25,10 +26,11 @@ public class InsertionsortThread extends Thread{
 		}
 	}
 
+	// Return if the thread failed
 	public boolean threadFail() {
 		if (this.failFlag == 0) {
 			return true;
 		}
 		return false;
-	}	
+	}
 }
