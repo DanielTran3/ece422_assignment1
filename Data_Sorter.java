@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Data_Sorter {
 
@@ -69,14 +71,17 @@ public class Data_Sorter {
 			System.exit(0);
 		}
 
+		// Create the executive
+		Data_Sorter exec = new Data_Sorter();
+		
 		// Check for a valid input filename
-		if (!dg.invalidFilename(inputFilename)) {
+		if (!exec.invalidFilename(args[0])) {
 			System.out.println("Please enter a valid file name: <\"filename\".txt>");
 			System.exit(0);
 		}
 
 		// Check for a valid output filename
-		if (!dg.invalidFilename(outputFilename)) {
+		if (!exec.invalidFilename(args[1])) {
 			System.out.println("Please enter a valid file name: <\"filename\".txt>");
 			System.exit(0);
 		}
@@ -98,8 +103,7 @@ public class Data_Sorter {
 		float failureProbability = Float.parseFloat(args[2]);
 		int timeLimit_milli = Integer.parseInt(args[3]);
 
-//			// Create executive, read the input data, create the adjudicator
-		Data_Sorter exec = new Data_Sorter();
+		// read the input data and  create the adjudicator
 		int[] nums = exec.read_data(inputFilename);
 		Adjudicator adj = new Adjudicator(nums);
 
