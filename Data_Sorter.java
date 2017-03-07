@@ -182,11 +182,13 @@ public class Data_Sorter {
 			else {
 				// Write the int[] from backup thread to a file
 				exec.write_data(outputFilename, nums);
+				System.out.println("Program Completed");
 			}
 		}
 		else {
 			// Write the int[] from primary thread to a file
 			exec.write_data(outputFilename, nums);
+			System.out.println("Program Completed");
 		}
 	}
 }

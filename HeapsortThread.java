@@ -5,7 +5,9 @@ public class HeapsortThread extends Thread {
 	private int[] listToSort;
 	private Heapsort sorter;
 	private float failureProbability;
-	private int failFlag;
+	// Initialize flag to a value that is not 1 or 0 to determine if 
+	// a timeout occurred
+	private int failFlag = 2;
 
 	public HeapsortThread(int[] list_to_sort, float failChance) {
 		this.listToSort = list_to_sort;
