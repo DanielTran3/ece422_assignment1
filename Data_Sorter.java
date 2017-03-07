@@ -1,9 +1,7 @@
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -48,16 +46,6 @@ public class Data_Sorter {
 		catch(IOException e) {
 			System.out.println("Couldn't write to File!");
 			e.printStackTrace();
-		}
-	}
-	
-	public void delete_file(String filename) {
-		File file = new File(filename);
-		try {
-			Files.deleteIfExists(file.toPath());
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("File cannot be deleted");
 		}
 	}
 	
