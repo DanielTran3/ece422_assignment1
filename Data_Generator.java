@@ -16,7 +16,7 @@ public class Data_Generator {
 			PrintWriter writer = new PrintWriter(filename);
 
 			while (counter < num_elements) {
-				random_number = (int) (Math.random() * 1000 + 1);
+				random_number = (int) (Math.random() * 10000 + 1);
 				writer.println(Integer.toString(random_number));
 				counter++;
 			}
