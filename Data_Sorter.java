@@ -141,8 +141,7 @@ public class Data_Sorter {
 				else if (!adj.acceptanceTest(nums)) {
 					System.out.println("Backup Variant Failed Acceptance Test");
 				}
-				
-				exec.delete_file(outputFilename);
+				System.exit(0);
 			}
 			
 			else {
