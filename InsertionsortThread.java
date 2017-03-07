@@ -2,9 +2,10 @@ public class InsertionsortThread extends Thread{
 
 	private int[] listToSort;
 	private Insertionsort sorter;
-	private double failureProbability;
+	private float failureProbability;
+	private int failFlag;
 
-	public InsertionsortThread(int[] list_to_sort, double failChance) {
+	public InsertionsortThread(int[] list_to_sort, float failChance) {
 		this.listToSort = list_to_sort;
 		this.sorter = new Insertionsort();
 		this.failureProbability = failChance;
@@ -13,11 +14,10 @@ public class InsertionsortThread extends Thread{
 	public void run() {
 
 		try {
-			sorter.insertSort(listToSort, failureProbability);
-			if (listToSort[0] != -1) {
-				for (Integer i : listToSort) {
-					System.out.println(i.toString());
-				}
+			System.out.println(failureProbability);
+			failFlag = sorter.insertSort(listToSort, failureProbability);
+			if (failFlag == 0) {
+				Thread.currentThread().stop();
 			}
 		}
 
@@ -26,4 +26,13 @@ public class InsertionsortThread extends Thread{
 			throw new ThreadDeath();
 		}
 	}
+
+	public boolean threadFail() {
+		if (this.failFlag == 0) {
+			return true;
+
+		}
+
+		return false;
+	}	
 }

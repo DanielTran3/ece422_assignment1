@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     Insertionsort
  * Method:    insertSort
- * Signature: ([ID)[I
+ * Signature: ([IF)I
  */
-JNIEXPORT jintArray JNICALL Java_Insertionsort_insertSort
-  (JNIEnv *, jobject, jintArray, jdouble);
+JNIEXPORT jint JNICALL Java_Insertionsort_insertSort
+  (JNIEnv *, jobject, jintArray, jfloat);
 
 #ifdef __cplusplus
 }
