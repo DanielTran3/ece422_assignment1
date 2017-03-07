@@ -52,8 +52,7 @@ public class Heapsort {
 		double hazard = probFail * num_mem_accesses;
 		Random rFail = new Random();
 		double randomValue = rFail.nextDouble();
-		System.out.println(hazard);
-		System.out.println(randomValue);
+
 		if ((randomValue >= 0.5) && (randomValue <= (0.5 + hazard))) {
 			return 0;
 		}

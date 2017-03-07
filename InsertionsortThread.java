@@ -14,7 +14,6 @@ public class InsertionsortThread extends Thread{
 	public void run() {
 
 		try {
-			System.out.println(failureProbability);
 			failFlag = sorter.insertSort(listToSort, failureProbability);
 			if (failFlag == 0) {
 				Thread.currentThread().stop();
@@ -22,7 +21,6 @@ public class InsertionsortThread extends Thread{
 		}
 
 		catch (ThreadDeath td) {
-			System.out.println("Thread died");
 			throw new ThreadDeath();
 		}
 	}

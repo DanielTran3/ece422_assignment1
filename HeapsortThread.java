@@ -23,7 +23,6 @@ public class HeapsortThread extends Thread {
 		}
 		
 		catch (ThreadDeath td) {
-			System.out.println("Thread died");
 			throw new ThreadDeath();
 		}
 	}
