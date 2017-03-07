@@ -4,10 +4,10 @@ public class HeapsortThread extends Thread {
 	
 	private int[] listToSort;
 	private Heapsort sorter;
-	private double failureProbability;
+	private float failureProbability;
 	private int failFlag;
 	
-	public HeapsortThread(int[] list_to_sort, double failChance) {
+	public HeapsortThread(int[] list_to_sort, float failChance) {
 		this.listToSort = list_to_sort;
 		this.sorter = new Heapsort();
 		this.failureProbability = failChance;

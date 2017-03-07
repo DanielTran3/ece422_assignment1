@@ -34,7 +34,7 @@ public class Heapsort {
 		}
 	}
 
-	public int heapSort(int[] data, double probFail) {
+	public int heapSort(int[] data, float probFail) {
 		int size = data.length;
 
 		// Build the heap up
@@ -49,9 +49,9 @@ public class Heapsort {
 			heapify(data, 0, node);
 		}
 		
-		double hazard = probFail * num_mem_accesses;
+		float hazard = probFail * num_mem_accesses;
 		Random rFail = new Random();
-		double randomValue = rFail.nextDouble();
+		float randomValue = rFail.nextFloat();
 
 		if ((randomValue >= 0.5) && (randomValue <= (0.5 + hazard))) {
 			return 0;

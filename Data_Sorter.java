@@ -51,6 +51,16 @@ public class Data_Sorter {
 		}
 	}
 	
+	public void delete_file(String filename) {
+		File file = new File(filename);
+		try {
+			Files.deleteIfExists(file.toPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("File cannot be deleted");
+		}
+	}
+	
 	public static void main(String[] args) {
 		if (args.length != 4) {
 			System.out.println("Please Enter Only Four Inputs: Input Filename, Output Filename, Failure Probability, and Time Limit");
@@ -86,13 +96,13 @@ public class Data_Sorter {
 
 		if (primaryThread.threadFail() || watchdogTimer.hasStopped() || !adj.acceptanceTest(nums)) {
 			if (primaryThread.threadFail()) {
-				System.out.println("Primary Sort Failed");
+				System.out.println("Primary Variant Failed");
 			}
 			else if (watchdogTimer.hasStopped()) {
-				System.out.println("Primary Sort Failed to Complete On Time");
+				System.out.println("Primary Variant Failed to Complete On Time");
 			}
 			else if (!adj.acceptanceTest(nums)) {
-				System.out.println("Primary Sort Failed Acceptance Test");
+				System.out.println("Primary Variant Failed Acceptance Test");
 			}
 			
 			// Restore Checkpoint
@@ -123,22 +133,16 @@ public class Data_Sorter {
 			
 			if (backupThread.threadFail() || watchdogTimer.hasStopped() || !adj.acceptanceTest(nums)) {
 				if (backupThread.threadFail()) {
-					System.out.println("Backup Sort Failed");
+					System.out.println("Backup Variant Failed");
 				}
 				else if (watchdogTimer.hasStopped()) {
-					System.out.println("Backup Sort Failed to Complete On Time");
+					System.out.println("Backup Variant Failed to Complete On Time");
 				}
 				else if (!adj.acceptanceTest(nums)) {
-					System.out.println("Backup Sort Failed Acceptance Test");
+					System.out.println("Backup Variant Failed Acceptance Test");
 				}
 				
-				File file = new File(outputFilename);
-				try {
-					Files.deleteIfExists(file.toPath());
-				} catch (IOException e) {
-					e.printStackTrace();
-					System.out.println("File cannot be deleted");
-				}
+				exec.delete_file(outputFilename);
 			}
 			
 			else {

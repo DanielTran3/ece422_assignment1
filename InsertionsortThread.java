@@ -28,9 +28,7 @@ public class InsertionsortThread extends Thread{
 	public boolean threadFail() {
 		if (this.failFlag == 0) {
 			return true;
-
 		}
-
 		return false;
 	}	
 }
