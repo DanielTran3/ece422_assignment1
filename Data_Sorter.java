@@ -123,13 +123,13 @@ public class Data_Sorter {
 			
 			if (backupThread.threadFail() || watchdogTimer.hasStopped() || !adj.acceptanceTest(nums)) {
 				if (backupThread.threadFail()) {
-					System.out.println("Primary Sort Failed");
+					System.out.println("Backup Sort Failed");
 				}
 				else if (watchdogTimer.hasStopped()) {
-					System.out.println("Primary Sort Failed to Complete On Time");
+					System.out.println("Backup Sort Failed to Complete On Time");
 				}
 				else if (!adj.acceptanceTest(nums)) {
-					System.out.println("Primary Sort Failed Acceptance Test");
+					System.out.println("Backup Sort Failed Acceptance Test");
 				}
 				
 				File file = new File(outputFilename);

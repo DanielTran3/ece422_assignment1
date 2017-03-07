@@ -53,8 +53,6 @@ jint insertion_sort(jint *array_to_sort, jsize array_len, jfloat probFail){
 	float hazard = (float) probFail * num_mem_accesses;
 	srand(time(NULL));
 	float randomValue = ((float) rand() / (float) RAND_MAX);
-	printf("Hazard: %f\n", hazard);
-	printf("randomValue: %f\n", randomValue);
 
 	if ((randomValue >= 0.5) && (randomValue <= (0.5 + hazard))) {
 		return 0;
