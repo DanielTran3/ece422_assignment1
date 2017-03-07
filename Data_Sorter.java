@@ -103,6 +103,7 @@ public class Data_Sorter {
 			
 			// Restart watchdog timer and schedule timer for the backup variant
 			watchdogTimer = new Watchdog(backupThread);
+			sortingTimer = new Timer();
 			sortingTimer.schedule(watchdogTimer, timeLimit_seconds * 1000);
 			
 			// Load the insertion sort native variable

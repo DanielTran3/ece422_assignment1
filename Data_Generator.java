@@ -40,10 +40,10 @@ public class Data_Generator {
 
 	public static void main(String[] args) {
 		
-//		if (args.length != 2) {
-//			System.out.println("Please Enter Only Two Inputs: Filename to write (ex. <\"filename\".txt>) to and number of elements to generate");
-//			System.exit(0);
-//		}
+		if (args.length != 2) {
+			System.out.println("Please Enter Only Two Inputs: Filename to write (ex. <\"filename\".txt>) to and number of elements to generate");
+			System.exit(0);
+		}
 
 		String filename;
 		String num_ints;
